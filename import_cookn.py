@@ -368,7 +368,10 @@ def upload_file(
 
     data["ingredient_groups"] = get_ingredient_groups(scraper.ingredients())
     data["errors"]["ingredient_groups"] = ""
-    data["directions"] = "\n".join(scraper.instructions())
+    instructions = scraper.instructions()
+    data["directions"] = (
+        instructions if isinstance(instructions, str) else "\n".join(instructions)
+    )
     data["errors"]["directions"] = ""
     data["public"] = True
 

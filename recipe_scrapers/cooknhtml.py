@@ -55,7 +55,7 @@ class CooknHtml(AbstractFileScraper):
             instruction_groups.extend(
                 removed_watermark.split(self.instruction_separator)
             )
-        return "".join(instruction_groups)
+        return "\n".join(instruction_groups)
 
     def image(self):
         return self.soup.find("img", {"itemprop": "photo"}).attrs["src"]
