@@ -24,6 +24,7 @@ from .chefkoch import Chefkoch
 from .closetcooking import ClosetCooking
 from .cookeatshare import CookEatShare
 from .cookieandkate import CookieAndKate
+from .cooknhtml import CooknHtml
 from .cookpad import CookPad
 from .cookstr import Cookstr
 from .copykat import CopyKat
@@ -251,6 +252,8 @@ SCRAPERS = {
     Yummly.host(): Yummly,
 }
 
+FILE_SCRAPERS = {"cookn_html": CooknHtml}
+
 
 class WebsiteNotImplementedError(NotImplementedError):
     """ Error when website is not supported by this library. """
@@ -270,6 +273,16 @@ class NoSchemaFoundInWildMode(Exception):
 
     def __str__(self):
         return f"No Recipe Schema found at {self.url}"
+
+
+class FileFormatNotImplementedError(NotImplementedError):
+    """ Error when website is not supported by this library. """
+
+    def __init__(self, format):
+        self.format = format
+
+    def __str__(self):
+        return f"({self.format}) file format is not supported"
 
 
 def get_domain(url):
@@ -311,5 +324,14 @@ def scrape_me(url_path, **options):
     return scraper(url_path, **options)
 
 
-__all__ = ["scrape_me"]
+def scrape_file(path, file_format, **options):
+    try:
+        scraper = FILE_SCRAPERS[file_format]
+    except KeyError:
+        raise FileFormatNotImplementedError(file_format)
+
+    return scraper(path, **options)
+
+
+__all__ = ["scrape_me", "scrape_file"]
 name = "recipe_scrapers"

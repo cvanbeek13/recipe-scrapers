@@ -15,6 +15,10 @@ SERVE_REGEX_ITEMS = re.compile(
 SERVE_REGEX_TO = re.compile(r"\d+(\s+to\s+|-)\d+", flags=re.I | re.X)
 
 
+def openeats_safe_chars(s):
+    return s.replace("°", " degrees")
+
+
 def get_minutes(element):
     if element is None:
         return None
@@ -64,6 +68,13 @@ def get_yields(element):
         servings = "{} item(s)".format(matched)
 
     return servings
+
+
+def get_yields_num(string):
+    try:
+        return float(SERVE_REGEX_NUMBER.search(string).groupdict().get("items"))
+    except Exception:
+        return None
 
 
 def normalize_string(string):

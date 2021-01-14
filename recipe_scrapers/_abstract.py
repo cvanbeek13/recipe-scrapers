@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from ._exception_handling import ExceptionHandlingMetaclass
 from ._schemaorg import SchemaOrg
 from ._decorators import Decorators
+from ._utils import get_yields_num, openeats_safe_chars
 
 
 # some sites close their content for 'bots', so user-agent must be supplied
@@ -58,6 +59,10 @@ class AbstractScraper(metaclass=ExceptionHandlingMetaclass):
     def yields(self):
         """ The number of servings or items in the recipe """
         raise NotImplementedError("This should be implemented.")
+
+    def yields_num(self):
+        yields = self.yields()
+        return get_yields_num(yields) if yields is not None else 4
 
     @Decorators.schema_org_priority
     @Decorators.og_image_get
@@ -134,3 +139,55 @@ class AbstractScraper(metaclass=ExceptionHandlingMetaclass):
     def site_name(self):
         meta = self.soup.find("meta", property="og:site_name")
         return meta.get("content") if meta else None
+
+
+class AbstractFileScraper(metaclass=ExceptionHandlingMetaclass):
+    def __init__(self, path, exception_handling=True, encoding="utf-8"):
+        with open(path, "r", encoding=encoding) as f:
+            file_data = openeats_safe_chars(f.read())
+
+        self.path = path
+        self.file_data = file_data
+        self.exception_handling = exception_handling
+
+    def title(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def total_time(self):
+        """ total time it takes to preparate the recipe in minutes """
+        raise NotImplementedError("This should be implemented.")
+
+    def yields(self):
+        """ The number of servings or items in the recipe """
+        raise NotImplementedError("This should be implemented.")
+
+    def yields_num(self):
+        yields = self.yields()
+        return get_yields_num(yields) if yields is not None else 1
+
+    def image(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def nutrients(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def language(self):
+        return "en"
+
+    def ingredients(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def instructions(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def ratings(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def author(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def reviews(self):
+        raise NotImplementedError("This should be implemented.")
+
+    def links(self):
+        raise NotImplementedError("This should be implemented.")

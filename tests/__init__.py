@@ -27,3 +27,20 @@ class ScraperTest(unittest.TestCase):
                         f"could not find canonical url for online test of scraper '{self.scraper_class.__name__}'"
                     )
                 self.harvester_class = self.scraper_class(url=canonical_url["href"])
+
+
+class FileScraperTest(unittest.TestCase):
+
+    test_file_name = None
+
+    def setUp(self):
+        options = {"exception_handling": False}
+        options.update(getattr(self, "scraper_options", {}))
+
+        test_file_name = (
+            self.test_file_name
+            if self.test_file_name
+            else self.scraper_class.__name__.lower()
+        )
+        test_file_path = f"tests/test_data/{test_file_name}.testhtml"
+        self.harvester_class = self.scraper_class(test_file_path, **options)

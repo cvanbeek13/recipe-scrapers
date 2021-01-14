@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="ISO-8859-1" />
+        <title>Meril's Kicked Up Mac and Cheese</title>
+    </head>
+    <body>
+        <div style="margin: 15px;">
+
+            <!-- Recipe -->
+            <div itemscope itemtype="http://data-vocabulary.org/Recipe" >
+                <h1 itemprop="name">Meril's Kicked Up Mac and Cheese</h1>
+                <img itemprop="photo" src="131.jpg" alt="" style="margin: 4px;" />
+                <p style="font-style: italic;"><span itemprop="summary">Total Time: 2 hr 0 min</span></p>
+                <div style="font-size: 0.85em;">
+                    Prep time: <time datetime="" itemprop="prepTime">1 hr 0 min</time><br/>
+                    Cook time: <time datetime="" itemprop="cookTime">1 hr 0 min</time><br/>
+                    Yield: <span itemprop="yield">6 to 8 servings</span>
+                    <br/>
+                    <br/>
+                    <span itemprop="nutrition" itemscope itemtype="http://data-vocabulary.org/Nutrition">
+                        Serving size: <span itemprop="servingSize">1</span><br/>
+                        Calories per serving: <span itemprop="calories">2,880</span><br/><br/>
+                    </span>
+                </div>
+
+                <b>Ingredients:</b>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">2 teaspoons</span>
+                    <span itemprop="name">salt</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 teaspoon</span>
+                    <span itemprop="name">olive oil</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/2 pound</span> elbow
+                    <span itemprop="name">macaroni</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">9 tablespoons</span> (1 stick plus 1 tablespoon) unsalted
+                    <span itemprop="name">butter</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/2 cup</span> all-purpose
+                    <span itemprop="name">flour</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/4 cup</span> finely chopped
+                    <span itemprop="name">smoked ham</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">3 cups</span> whole
+                    <span itemprop="name">milk</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/4 teaspoon</span> ground white or
+                    <span itemprop="name">black pepper</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">3 cups</span> grated cheddar (about 8 ounces)
+                    <span itemprop="name"></span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/2 cup</span> frozen green
+                    <span itemprop="name">peas</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1/2 cup</span> fine
+                    <span itemprop="name">bread crumbs</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 teaspoon</span> emeril's original essence, or to taste, recipe follows
+                    <span itemprop="name"></span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">2 1/2 tablespoons</span>
+                    <span itemprop="name">paprika</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">2 tablespoons</span>
+                    <span itemprop="name">salt</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">2 tablespoons</span>
+                    <span itemprop="name">garlic powder</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 tablespoon</span>
+                    <span itemprop="name">black pepper</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 tablespoon</span>
+                    <span itemprop="name">onion powder</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 tablespoon</span>
+                    <span itemprop="name">cayenne pepper</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 tablespoon</span> dried
+                    <span itemprop="name">oregano</span>
+                </span>
+                <br/>
+                <span itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient" style="margin-left:7px;">
+                    <span itemprop="amount">1 tablespoon</span> dried
+                    <span itemprop="name">thyme</span>
+                </span>
+                <br/>
+                <br/>
+                <br/>
+                <b>Directions:</b><br/>
+                <div itemprop="instructions">
+                    Make sure the oven rack is in the center position and preheat the oven to 350 degrees F. Bring a large pot of water to a rolling boil over high heat. Add 1 teaspoon of the salt, the oil, and macaroni, and stir to combine. Reduce the heat to medium and cook 10 minutes, stirring occasionally with a long-handled fork or spoon to prevent the macaroni from sticking together. Using oven mitts or pot holders, remove the pot from the stove and drain the macaroni in a colander set in the sink, pouring away from you. Rinse under cold running water and set aside to drain well. Grease a 2-quart casserole dish with 1 tablespoon of the butter. Set aside. Melt the remaining stick of butter in a heavy saucepan over medium heat. Add the flour and cook over medium heat, stirring constantly with a wooden spoon, for 3 to 4 minutes. Do not allow the flour to brown. Add the ham and cook, stirring, for 2 minutes. Using the whisk, add the milk and cook, whisking constantly, until the mixture is thick and smooth, about 4 minutes. Remove from the heat. Add the remaining 1 teaspoon of salt, the pepper, 2 cups of the cheese, and the peas, and stir well. In a mixing bowl, combine the remaining 1 cup of cheese with the bread crumbs and Essence. Add the macaroni to the pot with the milk and cheese. Stir to combine well, then pour the mixture into the buttered casserole. Top with the seasoned cheese mixture. Bake until golden brown and bubbly, about 25 minutes. Using oven mitts or pot holders, remove the dish from the oven and let it rest for 5 minutes before serving.<BR><BR>Combine all ingredients thoroughly. Yield: 2/3 cup<BR><BR>Source: <a href="http://www.foodnetwork.com/recipes/merils-kicked-up-mac-and-cheese-recipe/index.html">foodnetwork.com</a><P align=left><br>Recipe formatted with the Cook'n <a href="http://www.dvo.com/index.html?CID=export_to_html_feature">Menu Planner</a> from DVO Enterprises.
+                </div>
+            </div>
+            <!-- /Recipe -->
+
+        </div>
+
+        <div style="width: 110px; height: 50px; margin: 50px auto;">
+            <a href="http://www.dvo.com"><img id="cooknLogo" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" border="0" height="40" width="88"/></a>
+        </div>
+
+        <script type="text/javascript">
+        //<![CDATA[
+            (function(x){x&&(x.src='data:image/gif;base64,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');})(document.getElementById('cooknLogo'));
+        //]]>
+        </script>
+
+    </body>
+</html>

@@ -20,8 +20,16 @@
     :target: https://pepy.tech/project/recipe-scrapers
     :alt: Downloads
 
-------
+Fork Purpose
+------------
 
+I'm in the process of creating an `OpenEats server
+<https://github.com/cvanbeek13/OpenEats>`_  for my mom and family to use.
+Currently, my Mom stores all her recipes in Cook'n, which can export them to HTML files.
+I want to scrape those recipes and upload them to OpenEats through the API
+
+recipe-scrapers README
+----------------------
 
 A simple web scraping tool for recipe sites.
 
