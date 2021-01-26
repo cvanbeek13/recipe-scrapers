@@ -9,6 +9,19 @@ import math
 import getopt
 
 from getpass import getpass
+from django.template.defaultfilters import slugify
+
+
+class DuplicateRecipeException(Exception):
+    """ Error when a recipe was already uploaded with the same slug. It may be a duplicate. """
+
+    def __init__(self, path, url):
+        self.path = path
+        self.url = url
+
+    def __str__(self):
+        return f"Recipe at path {self.path} possible duplicate of recipe at {self.url}"
+
 
 # Everything else will default to Entrée
 COURSE_SIMPLIFICATION = {
@@ -103,6 +116,21 @@ API_COURSE = API_RECIPE_GROUPS + "course/"
 TOKEN = getpass(prompt="JWT Token: ")
 
 pp = pprint.PrettyPrinter(indent=2)
+
+
+def check_recipe_exists(title):
+    slug = slugify(title)[:50]
+    headers = {"Authorization": "JWT {}".format(TOKEN)}
+    url = API_RECIPES + slug
+    resp = requests.get(url, headers=headers)
+    if resp.ok:
+        return True, url
+    elif resp.status_code == 404:
+        return False, None
+    else:
+        raise requests.ConnectionError(
+            f"Getting {url} returned {resp.status_code}. {resp.text}"
+        )
 
 
 def get_recipe_group_dict(api):
@@ -300,9 +328,18 @@ def upload_file(
         tags = set(tags)
     scraper = scrape_file(path, "cookn_html")
     data = dict()
+
+    title = scraper.title()
+    exists, existing_url = check_recipe_exists(title)
+    if exists:
+        raise DuplicateRecipeException(path, existing_url)
+
     data["errors"] = dict()
     data["id"] = 0
     data["slug"] = ""
+
+    data["title"] = title
+    data["errors"]["title"] = ""
 
     filename = os.path.basename(path)
     filename_wo_cookbook = (
@@ -358,9 +395,6 @@ def upload_file(
         data["source"] = source
         data["errors"]["source"] = ""
 
-    data["title"] = scraper.title()
-    data["errors"]["title"] = ""
-
     info = scraper.summary()
     if isinstance(info, str) and len(info) > 0:
         data["info"] = info
@@ -411,6 +445,8 @@ def upload_cookbook(path, course=None, cuisine=None, tags=set(), source=None):
                     tags=set(tags),
                     source=source,
                 )
+            except DuplicateRecipeException as e:
+                print(e)
             except Exception as e:
                 print(f"Unable to upload {filename} due to {e}")
 
@@ -434,7 +470,7 @@ def import_cookn(argv):
     tags = set()
     source = None
     try:
-        opts, args = getopt.getopt(
+        opts, _ = getopt.getopt(
             argv[1:], "c:u:t:s:h", ["course=", "cuisine=", "tags=", "source=", "help"]
         )
         for opt, arg in opts:
