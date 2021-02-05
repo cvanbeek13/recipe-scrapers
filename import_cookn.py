@@ -23,6 +23,17 @@ class DuplicateRecipeException(Exception):
         return f"Recipe at path {self.path} possible duplicate of recipe at {self.url}"
 
 
+class NotARecipeException(Exception):
+    """ Error when a recipe was already uploaded with the same slug. It may be a duplicate. """
+
+    def __init__(self, path, reason):
+        self.path = path
+        self.reason = reason
+
+    def __str__(self):
+        return f"Recipe at path {self.path} is not a recipe: {self.reason}"
+
+
 # Everything else will default to Entrée
 COURSE_SIMPLIFICATION = {
     "entree": "Entrée",
@@ -33,16 +44,24 @@ COURSE_SIMPLIFICATION = {
     "appetizers": "Appetizer",
     "dessert": "Dessert",
     "desserts": "Dessert",
+    "sweet": "Dessert",
+    "sweets": "Dessert",
     "bar": "Dessert",
     "bars": "Dessert",
+    "brownie": "Dessert",
+    "brownies": "Dessert",
     "cookie": "Dessert",
     "cookies": "Dessert",
     "cake": "Dessert",
     "cakes": "Dessert",
+    "candy": "Dessert",
+    "candies": "Dessert",
     "pie": "Dessert",
     "pies": "Dessert",
     "side": "Side",
     "sides": "Side",
+    "snack": "Side",
+    "snacks": "Side",
     "fruit": "Side",
     "fruits": "Side",
     "vegetables": "Side",
@@ -50,10 +69,14 @@ COURSE_SIMPLIFICATION = {
     "veggies": "Side",
     "salad": "Side",
     "salads": "Side",
+    "sauce": "Side",
+    "sauces": "Side",
     "drink": "Beverage",
     "drinks": "Beverage",
     "beverage": "Beverage",
     "beverages": "Beverage",
+    "dip": "Appetizer",
+    "dips": "Appetizer",
 }
 
 # Everything else defaults to Unknown
@@ -64,16 +87,22 @@ CUISINE_SIMPLIFICATION = {
     "breads": "Bread",
     "bar": "Bars",
     "bars": "Bars",
+    "brownie": "Bars",
+    "brownies": "Bars",
     "cookie": "Cookies",
     "cookies": "Cookies",
     "cake": "Cake",
     "cakes": "Cake",
+    "candy": "Candy",
+    "candies": "Candy",
     "fruit": "Fruit",
     "fruits": "Fruit",
     "pie": "Pie",
     "pies": "Pie",
     "pasta": "Pasta",
     "pastas": "Pasta",
+    "pasta-rice": "Pasta",
+    "rice": "Rice",
     "pork": "Pork",
     "porks": "Pork",
     "poultry": "Poultry",
@@ -92,6 +121,10 @@ CUISINE_SIMPLIFICATION = {
     "veggies": "Vegetables",
     "salad": "Salad",
     "salads": "Salad",
+    "sauce": "Sauce",
+    "sauces": "Sauce",
+    "dip": "Dips",
+    "dips": "Dips",
 }
 
 GLUTEN_FREE_TAGS = ["gluten free", "gluten-free", "(gf)"]
@@ -268,17 +301,21 @@ def parse_ingredient(line):
         return {"title": line}
 
 
-def get_ingredient_groups(ingredients):
+def get_ingredient_groups(ingredients, path):
     """Returns the ingredients group dictionary from the list of ingredients
 
     Ingredients that end with a colon are treated as a new ingredient group
     and all ingredients below it are placed into that group until another
     group is declared
     """
+
     if not isinstance(ingredients, list):
         ingredients = list(ingredients)
     groups = list()
     current_group = ""
+
+    if len(ingredients) == 0:
+        raise NotARecipeException(path, "No ingredients")
 
     # Need to check if the "" group should be included.  If the first item is a group heading, we won't
     if not ingredients[0].endswith(":"):
@@ -390,7 +427,7 @@ def upload_file(
     data["servings"] = str(servings)
     data["errors"]["servings"] = ""
 
-    source = scraper.source()
+    source = scraper.source() if source is None else source
     if isinstance(source, str) and len(source) > 0:
         data["source"] = source
         data["errors"]["source"] = ""
@@ -400,12 +437,17 @@ def upload_file(
         data["info"] = info
         data["errors"]["info"] = ""
 
-    data["ingredient_groups"] = get_ingredient_groups(scraper.ingredients())
+    data["ingredient_groups"] = get_ingredient_groups(scraper.ingredients(), path)
     data["errors"]["ingredient_groups"] = ""
+
     instructions = scraper.instructions()
-    data["directions"] = (
+    instructions_string = (
         instructions if isinstance(instructions, str) else "\n".join(instructions)
     )
+    if len(instructions_string.strip()) == 0:
+        raise NotARecipeException(path, "No instructions")
+
+    data["directions"] = instructions_string
     data["errors"]["directions"] = ""
     data["public"] = True
 
@@ -447,6 +489,8 @@ def upload_cookbook(path, course=None, cuisine=None, tags=set(), source=None):
                 )
             except DuplicateRecipeException as e:
                 print(e)
+            except NotARecipeException as e:
+                print(e)
             except Exception as e:
                 print(f"Unable to upload {filename} due to {e}")
 
@@ -469,14 +513,20 @@ def import_cookn(argv):
     cuisine = None
     tags = set()
     source = None
+    upload_single_file = False
     try:
         opts, _ = getopt.getopt(
-            argv[1:], "c:u:t:s:h", ["course=", "cuisine=", "tags=", "source=", "help"]
+            argv[1:],
+            "f:c:u:t:s:h",
+            ["file=", "course=", "cuisine=", "tags=", "source=", "help"],
         )
         for opt, arg in opts:
             if opt == "-h":
                 print(IMPORT_HELP)
                 exit()
+            elif opt in ("--file", "-f"):
+                upload_single_file = True
+                filepath = arg
             elif opt in ("--course", "-c"):
                 course = arg
             elif opt in ("--cuisine", "-u"):
@@ -485,10 +535,30 @@ def import_cookn(argv):
                 tags = set(arg.split(","))
             elif opt in ("--source", "-s"):
                 source = arg
-        folder = argv[0]
-        upload_cookbook(
-            folder, course=course, cuisine=cuisine, tags=tags, source=source
-        )
+
+        if upload_single_file:
+            if not os.path.exists(filepath):
+                raise FileNotFoundError(filepath)
+
+            cookbook_name = os.path.basename(os.path.dirname(filepath))
+            try:
+                upload_file(
+                    filepath,
+                    cookbook_name=cookbook_name,
+                    course=course,
+                    cuisine=cuisine,
+                    tags=tags,
+                    source=source,
+                )
+            except DuplicateRecipeException as e:
+                print(e)
+            except Exception as e:
+                print(f"Unable to upload {filepath} due to {e}")
+        else:
+            folder = argv[0]
+            upload_cookbook(
+                folder, course=course, cuisine=cuisine, tags=tags, source=source
+            )
     except getopt.GetoptError:
         print(IMPORT_HELP)
         exit(2)
